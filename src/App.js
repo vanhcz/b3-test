@@ -1,9 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 import './App.css';
-import { Button, Modal, Form, message, Input, DatePicker, Space } from 'antd';
+import { Button, Modal, Form, message } from 'antd';
 import 'antd/dist/antd.css';
-import { useForm } from 'rc-field-form';
 
 
 
@@ -14,15 +13,13 @@ function App() {
   const [arr, setArr] = useState([
     { name: 'Làm bài tập', description: "Làm luôn trong ngày hôm nay", deadline: '2022-10-03' }
   ])
-
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
-  };
-
-  const showModal = (index) => {
-    setIndexEdit(index)
-    setIsModalOpen(true);
-  };
+  
+  let local = JSON.parse(localStorage.getItem('todo'))
+  if(local) {
+    local = local
+  } else {
+    local = []
+  }
 
   const handleOk = () => {
     setIsModalOpen(false);
@@ -34,9 +31,8 @@ function App() {
 
 
   const onFinish = (values) => {
-    console.log(values);
-    arr[indexEdit] = values
-    setArr([...arr])
+    local[indexEdit] = values
+    localStorage.setItem('todo', JSON.stringify(local));
     message.success('Sửa thành công')
   };
 
@@ -53,18 +49,25 @@ function App() {
       message.error("Không được để trống thông tin !!!")
     } else {
       setArr([...arr, { name: name, description: des, deadline: date }])
+      const array={
+        name: name ,
+        description: des,
+        deadline: date
+      } ;
+        local.push(array)
+        localStorage.setItem('todo', JSON.stringify(local));
+        console.log(local);
       message.success('Thêm thành công')
       document.querySelector('.input-name').value = ''
       document.querySelector('.input-des').value = ''
       document.querySelector('#input-date').value = ''
     }
   }
-
   return (
     <div className="App">
       <div className="container">
         <div className="todoList-header">
-          <h1>TodoList</h1>
+          <h1>Todo List</h1>
         </div>
         <div className="todoList-input">
           <input type="text" className='input-name' placeholder='Name' />
@@ -73,15 +76,18 @@ function App() {
           <Button type="primary" onClick={add}>Add</Button>
         </div>
         <div className="todoList-output">
-          {arr ? 
-          arr.map((value, index) => {
-            const deleteBtn = () => {
-              arr.splice(index, 1)
-              setArr([...arr])
+          {
+          local ? 
+          local.map((value, index) => {
+            
+            const deleteBtn = (index) => {
+              local.splice(index, 1)
+              localStorage.setItem('todo', JSON.stringify(local));
+              setArr(...arr)
+              
               message.success('Xóa thành công')
             }
             const showModal = () => {
-              console.log(value.deadline);
               setIndexEdit(index)
               setIsModalOpen(true);
             };
@@ -98,7 +104,7 @@ function App() {
                   <Button type="primary" onClick={() => { showModal() }}>
                     Change
                   </Button>
-                  <Button type="primary" danger onClick={deleteBtn}>
+                  <Button type="primary" danger onClick={() => deleteBtn(index)}>
                     Delete
                   </Button>
                 </div>
