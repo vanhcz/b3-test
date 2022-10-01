@@ -1,0 +1,23 @@
+1.	 - Props
+	 + Props là một object được truyền vào trong một components, mỗi components sẽ nhận vào props và trả về react element
+	 + Props cho phép chúng ta giao tiếp giữa các components với nhau bằng cách truyền tham số qua lại giữa các components.
+	 + Khi một components cha truyền cho component con một props thì components con chỉ có thể đọc và không có quyền chỉnh sửa nó bên phía components cha
+	 - State 
+	 + là một object có thể được sử dụng để chứa dữ liệu hoặc thông tin về components
+	 + State có thể được thay đổi bất cứ khi nào mong muốn
+	 + State chỉ tồn tại trong phạm vi của components chứa nó, mỗi khi state thay đổi thì components đó sẽ được render lại
+
+2.	useEffect
+	useEffect là một hook trong React Hooks cho phép chúng ta làm việc với các life cycle ở functional component.
+	useEffect Hook là của 3 phương thức componentDidMount, componentDidUpdate, và componentWillUnmount kết hợp lại với nhau
+	useEffect sẽ giúp bạn xử lý các logic trong vòng đời của component và được gọi khi component có sự thay đổi.
+
+3.	Tham chiếu (referrence type) để chỉ đến một elemnent DOM cụ thể hay các component trong React
+	Cách copy array, object
+	+ Spread operator: [...array], {...object}
+	+ Destructuring: const [...array], {...object}
+	+ Sử dụng json: 
+	VD: 
+	let a = [1, 2, 3, 4, 5]
+	let b = JSON.stringify(a)
+	let c = JSON.parse(b)
